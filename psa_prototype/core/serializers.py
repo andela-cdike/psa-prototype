@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from core.models import Quote, Customer
+from core.models import Quote, Lead
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -21,11 +21,11 @@ class QuoteSerializer(serializers.ModelSerializer):
         fields = ('id', 'zipcode')
 
 
-class CustomerSerializer(serializers.ModelSerializer):
-    """docstring for CustomerSerializer"""
+class LeadSerializer(serializers.ModelSerializer):
+    """docstring for LeadSerializer"""
     user = UserSerializer(read_only=True)
     quote = QuoteSerializer(read_only=True)
 
     class Meta:
-        model = Customer
+        model = Lead
         fields = ('user', 'quote')

@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-class Customer(models.Model):
+class Lead(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    quote = models.ForeignKey('Quote', null=True, related_name='customer')
+    quote = models.ForeignKey('Quote', null=True, related_name='lead')
 
 
 class Quote(models.Model):

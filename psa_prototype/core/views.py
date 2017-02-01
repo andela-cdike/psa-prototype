@@ -6,8 +6,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from core.models import Customer, Quote
-from core.serializers import CustomerSerializer, QuoteSerializer
+from core.models import Lead, Quote
+from core.serializers import LeadSerializer, QuoteSerializer
 from psa_prototype.settings import (SOCIAL_AUTH_FACEBOOK_KEY)
 
 
@@ -29,9 +29,9 @@ class SocialLoginSuccess(View):
         user_id = request.session.get('_auth_user_id')
         quote = Quote.objects.get(quote_id=quote_id)
         user = User.objects.get(pk=user_id)
-        Customer.objects.create(quote=quote, user=user)
+        Lead.objects.create(quote=quote, user=user)
 
-        return_url = 'http://localhost:3000/user-info'
+        return_url = request.session.get('returnUrl')
         return redirect('{0}/?quoteId={1}'.format(return_url, quote_id))
 
 
@@ -52,6 +52,6 @@ class QuoteView(APIView):
 class UserInfo(APIView):
     def get(self, request, **kwargs):
         quote_id = self.kwargs.get('quote_id')
-        customer = Customer.objects.get(quote=quote_id)
-        serializer = CustomerSerializer(customer)
+        lead = Lead.objects.get(quote=quote_id)
+        serializer = LeadSerializer(lead)
         return Response(serializer.data, status=status.HTTP_200_OK)
